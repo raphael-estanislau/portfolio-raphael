@@ -23,7 +23,7 @@ export function Nav() {
     >
       <div className="mx-auto flex h-16 max-w-content items-center justify-between px-6">
         <a href="#top" className="font-mono text-sm tracking-tight text-white">
-          {PROFILE.name.split(" ")[0]}
+          {PROFILE.name}
           <span className="text-accent">.</span>
         </a>
 
