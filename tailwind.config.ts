@@ -9,30 +9,43 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: "#0B0C0F",
-        panel: "#121419",
-        panel2: "#171A21",
-        line: "#262A33",
-        muted: "#8A8F9C",
-        soft: "#C7CBD3",
-        accent: "#34D399",
-        accent2: "#6366F1",
+        // warm-paper editorial palette
+        paper: "#F4EFE4",
+        paper2: "#EDE6D6",
+        card: "#FBF8F1",
+        ink: "#191712",
+        soft: "#3D3A33",
+        muted: "#797367",
+        line: "#DAD2C1",
+        rule: "#1F1C16",
+        accent: "#A03B22",
+        accentSoft: "#C7613F",
       },
       fontFamily: {
+        display: ["var(--font-display)", "Georgia", "serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       maxWidth: {
-        content: "1080px",
+        content: "1180px",
+      },
+      letterSpacing: {
+        widest2: "0.22em",
       },
       keyframes: {
         "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(12px)" },
+          "0%": { opacity: "0", transform: "translateY(14px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
       },
       animation: {
-        "fade-up": "fade-up 0.6s ease-out both",
+        "fade-up": "fade-up 0.7s cubic-bezier(0.22,1,0.36,1) both",
+        "fade-in": "fade-in 1s ease-out both",
       },
     },
   },

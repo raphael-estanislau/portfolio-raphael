@@ -21,12 +21,12 @@ export default function Page() {
         <About />
         <Contact />
       </main>
-      <footer className="border-t border-line">
-        <div className="mx-auto flex max-w-content flex-col gap-2 px-6 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
+      <footer className="border-t border-rule">
+        <div className="mx-auto flex max-w-content flex-col gap-2 px-6 py-10 font-sans text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <span>
             © {year} {PROFILE.name}
           </span>
-          <span className="font-mono text-xs">{t.footer}</span>
+          <span>{t.footer}</span>
         </div>
       </footer>
     </>

@@ -9,38 +9,67 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="mx-auto flex min-h-[88vh] max-w-content flex-col justify-center px-6 py-24"
+      className="mx-auto max-w-content px-6 pb-20 pt-16 sm:pt-24"
     >
-      <p className="animate-fade-up font-mono text-sm text-accent">
-        {t.hero.kicker}
-      </p>
-
-      <h1 className="mt-6 animate-fade-up text-5xl font-semibold leading-[1.05] tracking-tight text-white sm:text-7xl">
-        {PROFILE.name}
-      </h1>
-
-      <p className="mt-8 max-w-2xl animate-fade-up text-lg leading-relaxed text-soft sm:text-xl">
-        {t.hero.lead}
-      </p>
-
-      <div className="mt-10 flex animate-fade-up flex-wrap items-center gap-4">
-        <a
-          href="#work"
-          className="rounded-lg bg-accent px-5 py-3 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
-        >
-          {t.hero.cta}
-        </a>
-        <a
-          href={`mailto:${PROFILE.email}`}
-          className="rounded-lg border border-line px-5 py-3 text-sm font-medium text-soft transition-colors hover:border-accent hover:text-white"
-        >
-          {PROFILE.email}
-        </a>
+      {/* masthead meta line */}
+      <div className="flex animate-fade-in flex-wrap items-center justify-between gap-3 border-b border-rule pb-4 font-sans text-[11px] uppercase tracking-widest2 text-muted">
+        <span>{t.hero.kicker}</span>
+        <span>{PROFILE.location[lang]}</span>
       </div>
 
-      <p className="mt-16 animate-fade-up font-mono text-xs uppercase tracking-widest text-muted">
-        {lang === "pt" ? PROFILE.role.pt : PROFILE.role.en}
-      </p>
+      {/* headline */}
+      <h1 className="mt-10 font-display text-[15vw] font-medium leading-[0.92] tracking-[-0.02em] text-ink sm:mt-14 sm:text-8xl lg:text-[8.5rem]">
+        {t.hero.headline.map((line, i) => (
+          <span
+            key={i}
+            className="block animate-fade-up"
+            style={{ animationDelay: `${0.05 + i * 0.08}s` }}
+          >
+            {i === 1 ? (
+              <span className="italic text-accent">{line}</span>
+            ) : (
+              line
+            )}
+          </span>
+        ))}
+      </h1>
+
+      {/* lead + role */}
+      <div className="mt-12 grid gap-10 border-t border-line pt-10 md:grid-cols-[1.4fr_1fr] md:gap-16">
+        <p
+          className="max-w-xl animate-fade-up text-lg leading-relaxed text-soft sm:text-xl"
+          style={{ animationDelay: "0.32s" }}
+        >
+          {t.hero.lead}
+        </p>
+
+        <div
+          className="animate-fade-up md:justify-self-end md:text-right"
+          style={{ animationDelay: "0.4s" }}
+        >
+          <p className="font-sans text-[11px] uppercase tracking-widest2 text-muted">
+            {PROFILE.role[lang]}
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3 md:justify-end">
+            <a
+              href="#work"
+              className="group inline-flex items-center gap-2 border-b-2 border-accent pb-0.5 font-sans text-sm font-medium text-ink transition-colors hover:text-accent"
+            >
+              {t.hero.cta}
+              <span className="transition-transform group-hover:translate-x-1">
+                →
+              </span>
+            </a>
+          </div>
+          <p className="mt-6 inline-flex items-center gap-2 font-sans text-xs text-muted md:justify-end">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+            </span>
+            {t.hero.available}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useLang } from "@/components/LanguageProvider";
-import { PROFILE } from "@/lib/content";
 
 export function Nav() {
-  const { t, toggle } = useLang();
+  const { t, lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -17,42 +16,60 @@ export function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "border-b border-line bg-ink/80 backdrop-blur" : "border-b border-transparent"
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-line bg-paper/85 backdrop-blur-md"
+          : "border-b border-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-content items-center justify-between px-6">
-        <a href="#top" className="font-mono text-sm tracking-tight text-white">
-          {PROFILE.name}
-          <span className="text-accent">.</span>
+        <a
+          href="#top"
+          className="font-display text-base font-medium tracking-tight text-ink"
+        >
+          Raphael Estanislau
         </a>
 
-        <nav className="flex items-center gap-1 text-sm">
-          <a
-            href="#work"
-            className="rounded-md px-3 py-2 text-muted transition-colors hover:text-white"
-          >
-            {t.nav.work}
-          </a>
-          <a
-            href="#about"
-            className="rounded-md px-3 py-2 text-muted transition-colors hover:text-white"
-          >
-            {t.nav.about}
-          </a>
-          <a
-            href="#contact"
-            className="rounded-md px-3 py-2 text-muted transition-colors hover:text-white"
-          >
-            {t.nav.contact}
-          </a>
-          <button
-            onClick={toggle}
-            aria-label="Toggle language"
-            className="ml-2 rounded-md border border-line px-3 py-1.5 font-mono text-xs text-soft transition-colors hover:border-accent hover:text-accent"
-          >
-            {t.langToggle}
-          </button>
+        <nav className="flex items-center gap-6 text-sm">
+          <div className="hidden items-center gap-6 sm:flex">
+            {[
+              { href: "#work", label: t.nav.work },
+              { href: "#about", label: t.nav.about },
+              { href: "#contact", label: t.nav.contact },
+            ].map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-soft underline-offset-4 transition-colors hover:text-accent hover:underline"
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-1 font-sans text-xs uppercase tracking-widest text-muted">
+            <button
+              onClick={() => setLang("pt")}
+              className={`px-1 transition-colors hover:text-ink ${
+                lang === "pt" ? "text-ink" : ""
+              }`}
+              aria-pressed={lang === "pt"}
+            >
+              PT
+            </button>
+            <span aria-hidden className="text-line">
+              ·
+            </span>
+            <button
+              onClick={() => setLang("en")}
+              className={`px-1 transition-colors hover:text-ink ${
+                lang === "en" ? "text-ink" : ""
+              }`}
+              aria-pressed={lang === "en"}
+            >
+              EN
+            </button>
+          </div>
         </nav>
       </div>
     </header>

@@ -7,45 +7,47 @@ export function About() {
   const { t, lang } = useLang();
 
   return (
-    <section
-      id="about"
-      className="border-y border-line bg-panel/40"
-    >
-      <div className="mx-auto grid max-w-content gap-14 px-6 py-24 md:grid-cols-[0.9fr_1.1fr]">
+    <section id="about" className="border-t border-rule bg-paper2/40">
+      <div className="mx-auto grid max-w-content gap-12 px-6 py-20 sm:py-28 md:grid-cols-[1.1fr_0.9fr] md:gap-20">
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <p className="font-sans text-[11px] uppercase tracking-widest2 text-muted">
             {t.about.title}
-          </h2>
-          <div className="mt-6 space-y-5">
+          </p>
+          <div className="mt-6 space-y-6">
             {t.about.body.map((para, i) => (
-              <p key={i} className="leading-relaxed text-soft">
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? "text-2xl leading-snug text-ink sm:text-[1.7rem]"
+                    : "text-lg leading-relaxed text-soft"
+                }
+              >
                 {para}
               </p>
             ))}
           </div>
         </div>
 
-        <div>
-          <p className="text-xs font-medium uppercase tracking-widest text-muted">
+        <div className="md:border-l md:border-line md:pl-12">
+          <p className="font-sans text-[11px] uppercase tracking-widest2 text-muted">
             {t.about.skillsTitle}
           </p>
-          <div className="mt-6 space-y-7">
+          <dl className="mt-7 space-y-6">
             {SKILLS.map((s) => (
-              <div key={s.group[lang]}>
-                <p className="font-mono text-sm text-accent">{s.group[lang]}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {s.items.map((item) => (
-                    <span
-                      key={item}
-                      className="rounded-md border border-line bg-panel2 px-3 py-1.5 text-sm text-soft"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
+              <div
+                key={s.group[lang]}
+                className="grid grid-cols-[1fr] gap-1 border-b border-line pb-5 last:border-0 sm:grid-cols-[110px_1fr] sm:gap-4"
+              >
+                <dt className="font-serif text-base italic text-accent">
+                  {s.group[lang]}
+                </dt>
+                <dd className="font-sans text-[13px] leading-relaxed text-soft">
+                  {s.items.join(" · ")}
+                </dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </div>
     </section>

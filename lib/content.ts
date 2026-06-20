@@ -5,57 +5,63 @@ type BiList = Record<Lang, string[]>;
 
 export interface Project {
   id: string;
+  index: string;
   year: string;
   name: string;
   tagline: Bi;
   summary: Bi;
   role: Bi;
+  context: Bi;
   highlights: BiList;
   stack: string[];
   metrics: { value: string; label: Bi }[];
-  accent: "accent" | "accent2";
 }
 
 export const PROFILE = {
   name: "Raphael Estanislau",
   email: "raphaelldinizz@icloud.com",
   github: "https://github.com/raphael-estanislau",
+  location: { pt: "São Paulo, Brasil", en: "São Paulo, Brazil" } as Bi,
   role: {
-    pt: "Data Science & I.A · Grupo Shoulder · Oriba, Shoulder e Hight",
-    en: "Data Science & AI · Grupo Shoulder · Oriba, Shoulder and Hight",
+    pt: "Data Science & I.A · Grupo Shoulder",
+    en: "Data Science & AI · Grupo Shoulder",
   } as Bi,
 };
 
 export const PROJECTS: Project[] = [
   {
     id: "dashboard-crm",
+    index: "01",
     year: "2026",
     name: "Dashboard CRM",
-    accent: "accent2",
     tagline: {
       pt: "Plataforma multi-marca de performance de CRM",
       en: "Multi-brand CRM performance platform",
     },
+    context: {
+      pt: "Em produção · Oriba, Haight e Shoulder",
+      en: "In production · Oriba, Haight and Shoulder",
+    },
     summary: {
-      pt: "Aplicação web interna que centraliza a análise de performance das campanhas de CRM (Email, SMS e Web Push) das marcas Oriba, Hight e Shoulder. Ingere dados da plataforma Insider e os enriquece com receita atribuída via Google Analytics 4, entregando KPIs, séries temporais e comparativos de período em uma única interface.",
-      en: "Internal web application that centralizes CRM campaign performance (Email, SMS and Web Push) across the Oriba, Hight and Shoulder brands. It ingests data from the Insider platform and enriches it with revenue attributed via Google Analytics 4, delivering KPIs, time series and period comparisons in a single interface.",
+      pt: "Aplicação interna que junta, num só lugar, a performance das campanhas de CRM das três marcas do grupo em quatro canais — Email, SMS, Web Push e App Push. Os números vêm da Insider e ganham receita atribuída pelo Google Analytics 4. Além dos canais, tem aba dedicada de receita, carrinho abandonado e comportamento de navegação. É o painel que os times usam toda semana pra montar apresentação.",
+      en: "Internal app that brings the three brands' CRM performance into one place across four channels — Email, SMS, Web Push and App Push. The numbers come from Insider and gain revenue attributed through Google Analytics 4. On top of the channels there are dedicated tabs for revenue, abandoned cart and browsing behavior. It is the panel the teams use every week to build their reports.",
     },
     role: {
-      pt: "Concepção, arquitetura e desenvolvimento full-stack",
-      en: "Concept, architecture and full-stack development",
+      pt: "Concepção, arquitetura e desenvolvimento — sozinho, ponta a ponta",
+      en: "Concept, architecture and development — solo, end to end",
     },
     highlights: {
       pt: [
-        "Arquitetura multi-marca: a marca é resolvida por requisição (query string ou header), com fallback retrocompatível",
-        "Ingestão fire-and-forget com cron diário, usando janela de 7 dias para entregas tardias e 45 dias para atribuição de receita",
-        "Matching fuzzy entre campanhas do banco e utm_campaign do GA4, com divisão proporcional de receita em empates N:1",
-        "API REST com mais de 30 endpoints (Email, SMS, Web Push, Ingestão, GA4) e schema relacional de 3 modelos",
+        "Quatro canais (Email, SMS, Web Push, App Push) mais carrinho abandonado, navegação e receita, tudo numa interface multi-marca onde cada marca só enxerga o que é dela",
+        "Receita atribuída pelo GA4 com match aproximado entre o nome da campanha e o utm_campaign, contada pelo mês da compra — então uma venda tardia ainda é creditada na campanha certa",
+        "Ingestão dispara e responde na hora: o cron diário roda em segundo plano por 5 a 15 minutos sem estourar o limite de 60s do Railway, com retry em falha de socket e TLS",
+        "Oito modelos no Postgres via Prisma, login com JWT por marca e área de admin para reconciliação e backfill histórico",
       ],
       en: [
-        "Multi-brand architecture: brand is resolved per request (query string or header) with a backward-compatible fallback",
-        "Fire-and-forget ingestion with a daily cron, using a 7-day window for late deliveries and a 45-day window for revenue attribution",
-        "Fuzzy matching between database campaigns and GA4 utm_campaign, with proportional revenue split on N:1 ties",
-        "REST API with over 30 endpoints (Email, SMS, Web Push, Ingestion, GA4) and a 3-model relational schema",
+        "Four channels (Email, SMS, Web Push, App Push) plus abandoned cart, browsing and revenue, all in one multi-brand interface where each brand only sees its own data",
+        "Revenue attributed through GA4 with fuzzy matching between campaign name and utm_campaign, counted by purchase month — so a late sale is still credited to the right campaign",
+        "Ingestion fires and returns instantly: the daily cron runs in the background for 5 to 15 minutes without hitting Railway's 60s limit, with retries on socket and TLS failures",
+        "Eight Postgres models through Prisma, per-brand JWT login and an admin area for reconciliation and historical backfill",
       ],
     },
     stack: [
@@ -67,76 +73,88 @@ export const PROJECTS: Project[] = [
       "Node.js",
       "Express",
       "Prisma",
-      "PostgreSQL (Neon)",
-      "Railway",
-      "Vercel",
+      "PostgreSQL · Neon",
       "GA4 Data API",
+      "Railway",
     ],
     metrics: [
+      { value: "4", label: { pt: "canais", en: "channels" } },
       { value: "3", label: { pt: "marcas", en: "brands" } },
-      { value: "3", label: { pt: "canais (Email/SMS/Push)", en: "channels (Email/SMS/Push)" } },
-      { value: "30+", label: { pt: "endpoints REST", en: "REST endpoints" } },
+      { value: "9", label: { pt: "abas analíticas", en: "analytical tabs" } },
     ],
   },
   {
     id: "oriba-intelligence",
+    index: "02",
     year: "2026",
     name: "Oriba Intelligence",
-    accent: "accent",
     tagline: {
-      pt: "Inteligência de mercado, social e concorrência",
-      en: "Market, social & competitive intelligence",
+      pt: "Inteligência competitiva de mercado, social e mídia",
+      en: "Competitive intelligence: market, social and media",
+    },
+    context: {
+      pt: "Em produção · Oriba e Shoulder",
+      en: "In production · Oriba and Shoulder",
     },
     summary: {
-      pt: "Dashboard que monitora redes sociais, concorrentes, voz do cliente e pricing. Cruza dados de social listening (Buzz Monitor) com o catálogo Qlik de cerca de 790 mil SKUs, acompanhando 9 marcas do varejo de moda e consolidando métricas que a API não entrega de forma confiável por conta própria.",
-      en: "Dashboard that monitors social media, competitors, customer voice and pricing. It cross-references social listening data (Buzz Monitor) with a Qlik catalog of around 790k SKUs, tracking 9 fashion-retail brands and consolidating metrics the API does not reliably expose on its own.",
+      pt: "Sistema de inteligência competitiva que reúne quatro frentes num painel só: pricing (catálogo Qlik de ~790 mil SKUs), redes sociais próprias (Meta Graph API, com seguidor real e insight de Reels), mídia paga e influenciadores (Meta Marketing API) e concorrência (Buzz Monitor). Um cron diário grava tudo num data warehouse no BigQuery, então o histórico é confiável — e quando o BigQuery ainda não tem o dado, o app volta sozinho pra API ao vivo.",
+      en: "Competitive-intelligence system that pulls four fronts into a single panel: pricing (a ~790k-SKU Qlik catalog), owned social (Meta Graph API, with real followers and Reels insights), paid media and influencers (Meta Marketing API) and competitors (Buzz Monitor). A daily cron writes everything into a BigQuery warehouse, so the history is reliable — and when BigQuery doesn't have the data yet, the app falls back to the live API on its own.",
     },
     role: {
-      pt: "Concepção e desenvolvimento end-to-end",
-      en: "Concept and end-to-end development",
+      pt: "Concepção e desenvolvimento — sozinho, ponta a ponta",
+      en: "Concept and development — solo, end to end",
     },
     highlights: {
       pt: [
-        "Pipeline de social listening com snapshots diários no Google Cloud Storage para reconstruir o histórico de seguidores que a API não fornece",
-        "Estratégia de cumulative max para eliminar perdas espúrias de seguidores causadas por metadados defasados da API",
-        "Processamento em streaming de cerca de 790 mil SKUs do Qlik para a aba de pricing",
-        "9 abas analíticas (Overview, Mercado, Pricing, Redes Sociais, CX, Voz do Cliente, Produtos, Concorrentes, Editorial) com carregamento lazy",
+        "Data warehouse no BigQuery (prt-dados-comercial.oriba_intelligence) populado por cron diário; a leitura histórica tem fallback transparente pras APIs quando falta dado no período",
+        "Integração direta com a Meta Graph e Marketing API — seguidor real, insight de Reels, demografia e performance de mídia, justamente os números que o social listening estimava errado",
+        "Catálogo Qlik de ~790 mil SKUs processado em streaming, virando métricas próprias: score de competitividade de 0 a 100, elasticidade promocional, índice de pressão competitiva e EMV",
+        "Dez abas analíticas, duas marcas, HTML montado em Jinja2 com cache-busting por hash do arquivo; deploy no Render no plano que não tem cold start",
       ],
       en: [
-        "Social-listening pipeline with daily Google Cloud Storage snapshots to rebuild the follower history the API does not provide",
-        "Cumulative-max strategy to eliminate spurious follower losses caused by stale API metadata",
-        "Streaming processing of around 790k Qlik SKUs for the pricing tab",
-        "9 analytical tabs (Overview, Market, Pricing, Social, CX, Customer Voice, Products, Competitors, Editorial) with lazy loading",
+        "BigQuery warehouse (prt-dados-comercial.oriba_intelligence) populated by a daily cron; historical reads fall back transparently to the APIs when a period is missing",
+        "Direct integration with the Meta Graph and Marketing API — real followers, Reels insights, demographics and media performance, exactly the numbers social listening was estimating wrong",
+        "A ~790k-SKU Qlik catalog processed in streaming, turned into custom metrics: a 0–100 competitiveness score, promotional elasticity, competitive-pressure index and EMV",
+        "Ten analytical tabs, two brands, HTML assembled with Jinja2 and file-hash cache-busting; deployed on Render's no-cold-start plan",
       ],
     },
     stack: [
       "Python",
       "Flask",
+      "Jinja2",
       "JavaScript",
       "Chart.js",
+      "BigQuery",
       "Google Cloud Storage",
-      "Render.com",
+      "Meta Graph API",
+      "Meta Marketing API",
       "Buzz Monitor API",
       "Qlik",
+      "Playwright",
+      "Render",
     ],
     metrics: [
-      { value: "9", label: { pt: "marcas monitoradas", en: "brands monitored" } },
       { value: "~790k", label: { pt: "SKUs processados", en: "SKUs processed" } },
-      { value: "9", label: { pt: "abas analíticas", en: "analytical tabs" } },
+      { value: "10", label: { pt: "abas analíticas", en: "analytical tabs" } },
+      { value: "4", label: { pt: "fontes de dados", en: "data sources" } },
     ],
   },
   {
     id: "vm-pinheiros",
+    index: "03",
     year: "2026",
-    name: "Dashboard VM Pinheiros",
-    accent: "accent2",
+    name: "VM Pinheiros",
     tagline: {
       pt: "Visual Merchandising orientado a dados",
       en: "Data-driven Visual Merchandising",
     },
+    context: {
+      pt: "Em uso · loja Oriba Pinheiros",
+      en: "In use · Oriba Pinheiros store",
+    },
     summary: {
-      pt: "Painel interativo de Visual Merchandising para a loja Pinheiros da Oriba. Transforma a planilha mensal de bipagem em um dashboard auto-contido, um único arquivo HTML sem servidor, com mapa da loja, KPIs, ranking de posições, análise de categorias e alertas automáticos de ação.",
-      en: "Interactive Visual Merchandising panel for Oriba's Pinheiros store. It turns the monthly scanning spreadsheet into a self-contained dashboard, a single HTML file with no server, including a store map, KPIs, position ranking, category analysis and automated action alerts.",
+      pt: "Painel de Visual Merchandising para a loja de Pinheiros. Pega a planilha mensal de bipagem e devolve um dashboard num único arquivo HTML, sem servidor nenhum — com mapa da loja, ranking de posições, análise por categoria e alerta automático do que precisa girar. A diretoria abre o arquivo e funciona, offline.",
+      en: "Visual Merchandising panel for the Pinheiros store. It takes the monthly scanning spreadsheet and returns a dashboard in a single HTML file, no server at all — with a store map, position ranking, category analysis and automatic alerts for what needs to move. Leadership opens the file and it just works, offline.",
     },
     role: {
       pt: "Concepção e desenvolvimento",
@@ -144,19 +162,19 @@ export const PROJECTS: Project[] = [
     },
     highlights: {
       pt: [
-        "Saída auto-contida: um único HTML que roda offline, distribuível para a diretoria sem nenhuma infraestrutura",
-        "Mapa da loja com pins coloridos por participação de venda; o clique abre os top produtos e os itens sem giro",
-        "Pipeline em Python e Pandas: filtra, classifica móveis, calcula métricas agregadas e injeta JSON no template",
-        "6 abas analíticas com os design tokens da Oriba aplicados de forma consistente",
+        "Saída num único HTML que roda offline — dá pra mandar pra diretoria sem pedir infra, login ou instalação de nada",
+        "Mapa da loja com pin colorido por participação de venda; clicar no pin abre os produtos que mais vendem e os que estão parados naquela posição",
+        "Pipeline em Python e Pandas que filtra a planilha, classifica cada móvel, calcula as métricas e injeta o JSON pronto no template",
+        "Seis abas com os tokens de design da Oriba aplicados do mesmo jeito em todas",
       ],
       en: [
-        "Self-contained output: a single HTML that runs offline, shareable with leadership without any infrastructure",
-        "Store map with pins colored by sales share; clicking opens top products and no-rotation items",
-        "Python and Pandas pipeline: filters, classifies fixtures, computes aggregate metrics and injects JSON into the template",
-        "6 analytical tabs with Oriba design tokens applied consistently",
+        "Output in a single HTML that runs offline — you can send it to leadership without asking for infra, login or installing anything",
+        "Store map with pins colored by sales share; clicking a pin opens the best sellers and the stalled items in that spot",
+        "A Python and Pandas pipeline that filters the spreadsheet, classifies each fixture, computes the metrics and injects ready JSON into the template",
+        "Six tabs with Oriba's design tokens applied the same way across all of them",
       ],
     },
-    stack: ["Python", "Pandas", "HTML", "CSS", "Chart.js"],
+    stack: ["Python", "Pandas", "openpyxl", "HTML", "CSS", "Chart.js"],
     metrics: [
       { value: "1", label: { pt: "arquivo, zero servidor", en: "file, zero server" } },
       { value: "6", label: { pt: "abas analíticas", en: "analytical tabs" } },
@@ -171,25 +189,34 @@ export const SKILLS: { group: Bi; items: string[] }[] = [
     items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Recharts", "Chart.js"],
   },
   {
-    group: { pt: "Backend", en: "Backend" },
-    items: ["Node.js", "Express", "Python", "Flask", "REST APIs"],
+    group: { pt: "Backend & APIs", en: "Backend & APIs" },
+    items: ["Node.js", "Express", "Python", "Flask", "Jinja2", "REST APIs"],
   },
   {
     group: { pt: "Dados & I.A", en: "Data & AI" },
-    items: ["PostgreSQL", "Prisma", "Pandas", "Google Analytics 4", "Qlik", "Social listening"],
+    items: [
+      "PostgreSQL",
+      "Prisma",
+      "BigQuery",
+      "Pandas",
+      "Google Analytics 4",
+      "Meta Graph & Marketing API",
+      "Qlik",
+      "Social listening",
+    ],
   },
   {
     group: { pt: "Infra & Cloud", en: "Infra & Cloud" },
-    items: ["Vercel", "Railway", "Render", "Google Cloud Storage", "Neon", "Cron jobs"],
+    items: ["Railway", "Render", "Google Cloud Storage", "Neon", "Playwright", "Cron jobs"],
   },
 ];
 
 export const UI: Record<Lang, {
   nav: { work: string; about: string; contact: string };
-  hero: { kicker: string; lead: string; cta: string };
+  hero: { kicker: string; headline: string[]; lead: string; cta: string; available: string };
   about: { title: string; body: string[]; skillsTitle: string };
   work: { title: string; subtitle: string; roleLabel: string; highlightsLabel: string; stackLabel: string };
-  contact: { title: string; body: string; emailLabel: string; githubLabel: string };
+  contact: { kicker: string; title: string; body: string; emailLabel: string; githubLabel: string };
   footer: string;
   langToggle: string;
 }> = {
@@ -197,64 +224,70 @@ export const UI: Record<Lang, {
     nav: { work: "Projetos", about: "Sobre", contact: "Contato" },
     hero: {
       kicker: "Data Science & Inteligência Artificial",
+      headline: ["Dados", "& Inteligência", "Artificial."],
       lead:
-        "Crio soluções de dados e IA de ponta a ponta no Grupo Shoulder, atendendo Oriba, Shoulder e Hight. Cuido de tudo, do pipeline de ingestão até a interface que o time usa para decidir.",
+        "Trabalho com dados e IA no Grupo Shoulder, atendendo Oriba, Haight e Shoulder. Pego dado espalhado em plataforma de campanha, analytics, redes sociais e planilha de loja e transformo em painel que o time usa de verdade pra decidir.",
       cta: "Ver projetos",
+      available: "Três sistemas em produção",
     },
     about: {
       title: "Sobre",
       body: [
-        "No Grupo Shoulder trabalho com Data Science e IA atendendo as três marcas do grupo: Oriba, Shoulder e Hight. Pego dados espalhados em plataformas de campanha, analytics, social listening e planilhas de loja e transformo isso em painéis que a operação e a diretoria usam de verdade para decidir.",
-        "Gosto de soluções que entregam valor sem peso desnecessário, de um único HTML auto-contido a uma plataforma multi-marca com ingestão automatizada. Cada projeto abaixo está em produção, resolvendo um problema real do negócio.",
+        "Cuido de Data Science e IA no Grupo Shoulder, para as três marcas: Oriba, Haight e Shoulder. Na prática, isso é pegar dado de plataforma de campanha, analytics, redes sociais e planilha de loja — coisas que vivem espalhadas e em formatos diferentes — e juntar num painel que a operação e a diretoria abrem pra decidir.",
+        "Gosto de solução que entrega valor sem peso desnecessário. Tanto faz se é um HTML único que roda offline ou uma plataforma multi-marca com data warehouse e ingestão automatizada — o que importa é estar em produção, resolvendo um problema real. Os três projetos abaixo estão.",
       ],
-      skillsTitle: "Stack & competências",
+      skillsTitle: "Ferramentas",
     },
     work: {
       title: "Projetos",
-      subtitle: "Sistemas em produção, construídos para uso real no Grupo Shoulder.",
+      subtitle: "Sistemas em produção no Grupo Shoulder. Cada um nasceu de um problema concreto do negócio.",
       roleLabel: "Atuação",
-      highlightsLabel: "Destaques técnicos",
+      highlightsLabel: "Por dentro",
       stackLabel: "Stack",
     },
     contact: {
-      title: "Contato",
-      body: "Aberto a conversar sobre dados, IA e produtos internos.",
+      kicker: "Contato",
+      title: "Vamos conversar.",
+      body: "Aberto a falar sobre dados, IA e produtos internos.",
       emailLabel: "E-mail",
       githubLabel: "GitHub",
     },
-    footer: "Construído com Next.js e Tailwind. Deploy na Vercel.",
+    footer: "Feito com Next.js e Tailwind.",
     langToggle: "EN",
   },
   en: {
     nav: { work: "Work", about: "About", contact: "Contact" },
     hero: {
       kicker: "Data Science & Artificial Intelligence",
+      headline: ["Data", "& Artificial", "Intelligence."],
       lead:
-        "I build end-to-end data and AI solutions at Grupo Shoulder, serving Oriba, Shoulder and Hight. I own it all, from the ingestion pipeline to the interface the team uses to decide.",
+        "I work with data and AI at Grupo Shoulder, serving Oriba, Haight and Shoulder. I take data scattered across campaign platforms, analytics, social media and store spreadsheets and turn it into a panel the team actually uses to decide.",
       cta: "View work",
+      available: "Three systems in production",
     },
     about: {
       title: "About",
       body: [
-        "At Grupo Shoulder I work with Data Science and AI across the group's three brands: Oriba, Shoulder and Hight. I take data scattered across campaign platforms, analytics, social listening and store spreadsheets and turn it into dashboards that operations and leadership actually use to decide.",
-        "I favor solutions that deliver value without unnecessary weight, from a single self-contained HTML file to a multi-brand platform with automated ingestion. Every project below is in production, solving a real business problem.",
+        "I handle Data Science and AI at Grupo Shoulder, across the three brands: Oriba, Haight and Shoulder. In practice that means taking data from campaign platforms, analytics, social media and store spreadsheets — things that live scattered and in different shapes — and pulling it into a panel operations and leadership open to decide.",
+        "I like solutions that deliver value without unnecessary weight. Whether it's a single HTML file that runs offline or a multi-brand platform with a data warehouse and automated ingestion — what matters is that it's in production, solving a real problem. The three projects below are.",
       ],
-      skillsTitle: "Stack & skills",
+      skillsTitle: "Tools",
     },
     work: {
       title: "Work",
-      subtitle: "Production systems, built for real use at Grupo Shoulder.",
+      subtitle: "Production systems at Grupo Shoulder. Each one grew out of a concrete business problem.",
       roleLabel: "Role",
-      highlightsLabel: "Technical highlights",
+      highlightsLabel: "Under the hood",
       stackLabel: "Stack",
     },
     contact: {
-      title: "Contact",
+      kicker: "Contact",
+      title: "Let's talk.",
       body: "Open to talking about data, AI and internal products.",
       emailLabel: "Email",
       githubLabel: "GitHub",
     },
-    footer: "Built with Next.js and Tailwind. Deployed on Vercel.",
+    footer: "Built with Next.js and Tailwind.",
     langToggle: "PT",
   },
 };
