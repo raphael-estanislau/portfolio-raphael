@@ -1,34 +1,43 @@
 "use client";
 
-import { Nav } from "@/components/Nav";
-import { Hero } from "@/components/Hero";
+import { useEffect } from "react";
+import { Sidebar } from "@/components/Sidebar";
 import { Work } from "@/components/Work";
 import { About } from "@/components/About";
 import { Contact } from "@/components/Contact";
 import { useLang } from "@/components/LanguageProvider";
-import { PROFILE } from "@/lib/content";
 
 export default function Page() {
   const { t } = useLang();
-  const year = new Date().getFullYear();
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      const root = document.body.style;
+      root.setProperty("--mx", `${e.clientX}px`);
+      root.setProperty("--my", `${e.clientY}px`);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
 
   return (
     <>
-      <Nav />
-      <main>
-        <Hero />
-        <Work />
-        <About />
-        <Contact />
-      </main>
-      <footer className="border-t border-rule">
-        <div className="mx-auto flex max-w-content flex-col gap-2 px-6 py-10 font-sans text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
-          <span>
-            © {year} {PROFILE.name}
-          </span>
-          <span>{t.footer}</span>
-        </div>
-      </footer>
+      {/* cursor spotlight, subtle depth */}
+      <div className="spotlight pointer-events-none fixed inset-0 -z-10 hidden lg:block" />
+
+      <div className="mx-auto min-h-screen max-w-content px-6 py-12 sm:px-10 lg:flex lg:justify-between lg:gap-10 lg:px-16 lg:py-0">
+        <Sidebar />
+
+        <main id="content" className="pt-14 lg:w-[54%] lg:py-24">
+          <About />
+          <Work />
+          <Contact />
+
+          <footer className="pb-10 pt-6">
+            <p className="font-mono text-xs leading-relaxed text-muted">{t.footer}</p>
+          </footer>
+        </main>
+      </div>
     </>
   );
 }
