@@ -15,6 +15,8 @@ export interface Project {
   highlights: BiList;
   stack: string[];
   metrics: { value: string; label: Bi }[];
+  mockupCaption: Bi;
+  links?: { demo?: string; repo?: string; note?: Bi };
 }
 
 export const PROFILE = {
@@ -82,6 +84,16 @@ export const PROJECTS: Project[] = [
       { value: "3", label: { pt: "marcas", en: "brands" } },
       { value: "9", label: { pt: "abas analíticas", en: "analytical tabs" } },
     ],
+    mockupCaption: {
+      pt: "Mockup do dashboard CRM multi-marca com KPIs de campanha e receita GA4",
+      en: "Mockup of the multi-brand CRM dashboard with campaign KPIs and GA4 revenue",
+    },
+    links: {
+      note: {
+        pt: "Sistema interno · solicitar demo por e-mail",
+        en: "Internal system · request a demo by email",
+      },
+    },
   },
   {
     id: "oriba-intelligence",
@@ -138,6 +150,16 @@ export const PROJECTS: Project[] = [
       { value: "10", label: { pt: "abas analíticas", en: "analytical tabs" } },
       { value: "4", label: { pt: "fontes de dados", en: "data sources" } },
     ],
+    mockupCaption: {
+      pt: "Mockup do painel Oriba Intelligence com score competitivo e métricas de social",
+      en: "Mockup of the Oriba Intelligence panel with competitiveness score and social metrics",
+    },
+    links: {
+      note: {
+        pt: "Sistema interno · solicitar demo por e-mail",
+        en: "Internal system · request a demo by email",
+      },
+    },
   },
   {
     id: "vm-pinheiros",
@@ -180,8 +202,40 @@ export const PROJECTS: Project[] = [
       { value: "6", label: { pt: "abas analíticas", en: "analytical tabs" } },
       { value: "150+", label: { pt: "SKUs analisados", en: "SKUs analyzed" } },
     ],
+    mockupCaption: {
+      pt: "Mockup do painel VM Pinheiros com mapa da loja e alertas de giro",
+      en: "Mockup of the VM Pinheiros panel with store map and rotation alerts",
+    },
+    links: {
+      note: {
+        pt: "Arquivo offline · solicitar amostra por e-mail",
+        en: "Offline file · request a sample by email",
+      },
+    },
   },
 ];
+
+export const HIGHLIGHT_TERMS: Record<Lang, string[]> = {
+  pt: [
+    "Grupo Shoulder",
+    "Oriba",
+    "Haight",
+    "Shoulder",
+    "data warehouse",
+    "BigQuery",
+    "HTML único",
+  ],
+  en: [
+    "Grupo Shoulder",
+    "Oriba",
+    "Haight",
+    "Shoulder",
+    "data warehouse",
+    "BigQuery",
+    "single HTML",
+    "multi-brand platform",
+  ],
+};
 
 export const SKILLS: { group: Bi; items: string[] }[] = [
   {
@@ -211,15 +265,40 @@ export const SKILLS: { group: Bi; items: string[] }[] = [
   },
 ];
 
-export const UI: Record<Lang, {
-  sidebar: { tagline: string; intro: string; available: string; nav: { about: string; work: string; contact: string } };
-  sections: { about: { num: string; title: string }; work: { num: string; title: string }; contact: { num: string; title: string } };
-  about: { body: string[]; skillsIntro: string };
-  work: { subtitle: string; roleLabel: string; highlightsLabel: string; stackLabel: string };
-  contact: { overline: string; title: string; body: string; cta: string };
-  footer: string;
-  langToggle: string;
-}> = {
+export const UI: Record<
+  Lang,
+  {
+    sidebar: {
+      tagline: string;
+      intro: string;
+      available: string;
+      nav: { about: string; work: string; contact: string };
+    };
+    sections: {
+      about: { num: string; title: string };
+      work: { num: string; title: string };
+      contact: { num: string; title: string };
+    };
+    about: { body: string[]; skillsIntro: string };
+    work: {
+      subtitle: string;
+      roleLabel: string;
+      highlightsLabel: string;
+      stackLabel: string;
+      showMore: string;
+      showLess: string;
+      requestDemo: string;
+    };
+    contact: { overline: string; title: string; body: string; cta: string };
+    footer: string;
+    a11y: {
+      skipToContent: string;
+      mobileNav: string;
+      pageNav: string;
+      loadingPreview: string;
+    };
+  }
+> = {
   pt: {
     sidebar: {
       tagline: "Transformo dados em decisão.",
@@ -237,7 +316,6 @@ export const UI: Record<Lang, {
       body: [
         "Cuido de Data Science e IA no Grupo Shoulder, para as três marcas: Oriba, Haight e Shoulder. Na prática, eu pego dado de plataforma de campanha, analytics, redes sociais e planilha de loja, que vivem espalhados e em formatos diferentes, e junto num painel que a operação e a diretoria abrem pra decidir.",
         "Gosto de solução que entrega valor sem peso desnecessário. Tanto faz se é um HTML único que roda offline ou uma plataforma multi-marca com data warehouse e ingestão automatizada. O que importa é estar em produção, resolvendo um problema real.",
-        "Estas são algumas das ferramentas com que trabalho:",
       ],
       skillsIntro: "Ferramentas que uso no dia a dia:",
     },
@@ -246,6 +324,9 @@ export const UI: Record<Lang, {
       roleLabel: "Atuação",
       highlightsLabel: "Por dentro",
       stackLabel: "Stack",
+      showMore: "Ver mais detalhes",
+      showLess: "Ver menos",
+      requestDemo: "Solicitar demo",
     },
     contact: {
       overline: "03 · E agora?",
@@ -254,7 +335,12 @@ export const UI: Record<Lang, {
       cta: "Falar comigo",
     },
     footer: "Projetado e construído por Raphael Estanislau · Next.js e Tailwind.",
-    langToggle: "EN",
+    a11y: {
+      skipToContent: "Pular para o conteúdo",
+      mobileNav: "Navegação das seções",
+      pageNav: "Seções da página",
+      loadingPreview: "Carregando preview…",
+    },
   },
   en: {
     sidebar: {
@@ -273,7 +359,6 @@ export const UI: Record<Lang, {
       body: [
         "I handle Data Science and AI at Grupo Shoulder, across the three brands: Oriba, Haight and Shoulder. In practice, I take data from campaign platforms, analytics, social media and store spreadsheets, which live scattered and in different shapes, and pull it into a panel operations and leadership open to decide.",
         "I like solutions that deliver value without unnecessary weight. A single HTML file that runs offline or a multi-brand platform with a data warehouse and automated ingestion, it makes no difference. What matters is that it's in production, solving a real problem.",
-        "Here are a few of the tools I work with:",
       ],
       skillsIntro: "Tools I use day to day:",
     },
@@ -282,6 +367,9 @@ export const UI: Record<Lang, {
       roleLabel: "Role",
       highlightsLabel: "Under the hood",
       stackLabel: "Stack",
+      showMore: "Show more details",
+      showLess: "Show less",
+      requestDemo: "Request demo",
     },
     contact: {
       overline: "03 · What's next?",
@@ -290,6 +378,11 @@ export const UI: Record<Lang, {
       cta: "Get in touch",
     },
     footer: "Designed and built by Raphael Estanislau · Next.js and Tailwind.",
-    langToggle: "PT",
+    a11y: {
+      skipToContent: "Skip to content",
+      mobileNav: "Section navigation",
+      pageNav: "Page sections",
+      loadingPreview: "Loading preview…",
+    },
   },
 };

@@ -18,17 +18,26 @@ interface LangCtx {
 
 const Ctx = createContext<LangCtx | null>(null);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("pt");
+function readInitialLang(): Lang {
+  if (typeof document === "undefined") return "pt";
+  const fromDom = document.documentElement.dataset.lang;
+  if (fromDom === "en" || fromDom === "pt") return fromDom;
+  try {
+    const saved = window.localStorage.getItem("lang");
+    if (saved === "en" || saved === "pt") return saved;
+  } catch {
+    /* ignore */
+  }
+  return "pt";
+}
 
-  useEffect(() => {
-    const saved = window.localStorage.getItem("lang") as Lang | null;
-    if (saved === "pt" || saved === "en") setLangState(saved);
-  }, []);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [lang, setLangState] = useState<Lang>(readInitialLang);
 
   useEffect(() => {
     window.localStorage.setItem("lang", lang);
     document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+    document.documentElement.dataset.lang = lang;
   }, [lang]);
 
   const setLang = (l: Lang) => setLangState(l);

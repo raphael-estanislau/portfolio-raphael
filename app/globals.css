@@ -14,11 +14,21 @@ html {
 
 body {
   @apply bg-navy text-slate;
+  background-image:
+    linear-gradient(rgba(30, 43, 69, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 43, 69, 0.12) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center top;
 }
 
 ::selection {
   background: rgba(94, 234, 212, 0.2);
   color: #e4eaf7;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(94, 234, 212, 0.65);
+  outline-offset: 3px;
 }
 
 .tnum {
@@ -32,6 +42,22 @@ body {
     rgba(94, 234, 212, 0.06),
     transparent 40%
   );
+}
+
+.animate-delay-1 {
+  animation-delay: 0.1s;
+}
+.animate-delay-2 {
+  animation-delay: 0.2s;
+}
+.animate-delay-3 {
+  animation-delay: 0.3s;
+}
+.animate-delay-4 {
+  animation-delay: 0.4s;
+}
+.animate-delay-5 {
+  animation-delay: 0.5s;
 }
 
 /* thin scrollbar */

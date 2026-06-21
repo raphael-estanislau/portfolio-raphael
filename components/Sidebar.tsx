@@ -1,11 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useLang } from "@/components/LanguageProvider";
 import { PROFILE } from "@/lib/content";
-
-const SECTIONS = ["about", "work", "contact"] as const;
-type SectionId = (typeof SECTIONS)[number];
+import { useActiveSection, type SectionId } from "@/hooks/useActiveSection";
 
 function GitHubIcon() {
   return (
@@ -26,24 +23,7 @@ function MailIcon() {
 
 export function Sidebar() {
   const { t, lang, setLang } = useLang();
-  const [active, setActive] = useState<SectionId>("about");
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id as SectionId);
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] }
-    );
-    SECTIONS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
+  const active = useActiveSection();
 
   const navItems: { id: SectionId; label: string }[] = [
     { id: "about", label: t.sidebar.nav.about },
@@ -54,21 +34,27 @@ export function Sidebar() {
   return (
     <header className="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[44%] lg:flex-col lg:justify-between lg:py-24">
       <div>
-        <p className="animate-fade-up font-mono text-sm text-accent">
-          {PROFILE.role[lang]}
-        </p>
-        <h1 className="mt-3 animate-fade-up text-4xl font-semibold tracking-tight text-lightest sm:text-5xl">
+        <div className="animate-fade-up animate-delay-1 mb-6 flex items-center gap-4">
+          <div
+            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-line bg-panel2/60 font-mono text-lg font-semibold text-accent"
+            aria-hidden
+          >
+            RE
+          </div>
+          <p className="font-mono text-sm text-accent">{PROFILE.role[lang]}</p>
+        </div>
+
+        <h1 className="animate-fade-up animate-delay-2 text-4xl font-semibold tracking-tight text-lightest sm:text-5xl">
           {PROFILE.name}
         </h1>
-        <h2 className="mt-4 max-w-md animate-fade-up text-2xl font-medium leading-tight text-light sm:text-3xl">
+        <h2 className="animate-fade-up animate-delay-3 mt-4 max-w-md text-2xl font-medium leading-tight text-light sm:text-3xl">
           {t.sidebar.tagline}
         </h2>
-        <p className="mt-5 max-w-sm animate-fade-up leading-relaxed text-slate">
+        <p className="animate-fade-up animate-delay-4 mt-5 max-w-sm leading-relaxed text-slate">
           {t.sidebar.intro}
         </p>
 
-        {/* available */}
-        <p className="mt-6 inline-flex animate-fade-up items-center gap-2 font-mono text-xs text-slate">
+        <p className="animate-fade-up animate-delay-5 mt-6 inline-flex items-center gap-2 font-mono text-xs text-slate">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
@@ -76,26 +62,28 @@ export function Sidebar() {
           {t.sidebar.available}
         </p>
 
-        {/* nav, desktop only */}
-        <nav className="mt-14 hidden lg:block" aria-label="In-page">
+        <nav className="mt-14 hidden lg:block" aria-label={t.a11y.pageNav}>
           <ul className="space-y-4">
             {navItems.map((item) => {
               const on = active === item.id;
               return (
                 <li key={item.id}>
-                  <a href={`#${item.id}`} className="group flex items-center gap-4 py-1">
+                  <a
+                    href={`#${item.id}`}
+                    className="group flex items-center gap-4 py-1"
+                    aria-current={on ? "true" : undefined}
+                  >
                     <span
                       className={`h-px transition-all duration-300 ${
                         on
                           ? "w-16 bg-accent"
                           : "w-8 bg-line group-hover:w-16 group-hover:bg-light"
                       }`}
+                      aria-hidden
                     />
                     <span
                       className={`font-mono text-xs uppercase tracking-widest2 transition-colors ${
-                        on
-                          ? "text-accent"
-                          : "text-muted group-hover:text-light"
+                        on ? "text-accent" : "text-muted group-hover:text-light"
                       }`}
                     >
                       {item.label}
@@ -108,7 +96,6 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* socials + lang */}
       <div className="mt-10 flex items-center justify-between lg:mt-0">
         <div className="flex items-center gap-5 text-slate">
           <a
@@ -131,14 +118,18 @@ export function Sidebar() {
 
         <div className="flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-muted">
           <button
+            type="button"
             onClick={() => setLang("pt")}
             className={`px-1.5 py-1 transition-colors hover:text-light ${lang === "pt" ? "text-accent" : ""}`}
             aria-pressed={lang === "pt"}
           >
             PT
           </button>
-          <span aria-hidden className="text-line">/</span>
+          <span aria-hidden className="text-line">
+            /
+          </span>
           <button
+            type="button"
             onClick={() => setLang("en")}
             className={`px-1.5 py-1 transition-colors hover:text-light ${lang === "en" ? "text-accent" : ""}`}
             aria-pressed={lang === "en"}

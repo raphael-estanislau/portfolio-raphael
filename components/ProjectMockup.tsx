@@ -75,7 +75,7 @@ function Frame({
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted">{right}</span>
         )}
       </div>
-      <div className="flex flex-wrap gap-x-4 gap-y-1 border-b border-line px-4 pt-3">
+      <div className="flex flex-wrap gap-x-4 gap-y-1 border-b border-line px-3 pt-3 sm:px-4">
         {tabs.map((tb, i) => (
           <span
             key={tb}
@@ -87,7 +87,7 @@ function Frame({
           </span>
         ))}
       </div>
-      <div className="p-4">{children}</div>
+      <div className="p-3 sm:p-4">{children}</div>
     </div>
   );
 }
@@ -113,13 +113,13 @@ function CrmMock() {
       tabs={[L("Visão Geral", "Overview"), L("Receita", "Revenue"), "Email", "SMS", "Web Push", "App Push"]}
       active={1}
     >
-      <div className="grid grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
         <Kpi label={L("Enviados", "Sent")} value="1,84M" />
         <Kpi label={L("Aberturas", "Opens")} value="32,1%" delta="▲ 2,4 pts" />
         <Kpi label="CTOR" value="14,8%" delta="▲ 1,1 pts" />
         <Kpi label={L("Receita GA4", "GA4 revenue")} value="R$ 2,7M" delta="▲ 18%" />
       </div>
-      <div className="mt-3 grid grid-cols-[1.5fr_1fr] gap-3">
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[1.5fr_1fr]">
         <div className="rounded-lg border border-line bg-panel2/40 p-3">
           <div className="flex items-center justify-between">
             <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
@@ -163,8 +163,8 @@ function OribaMock() {
       tabs={[L("Pricing", "Pricing"), L("Redes Sociais", "Social"), L("Ads & Influ.", "Ads & Infl."), L("Concorrentes", "Competitors")]}
       active={1}
     >
-      <div className="grid grid-cols-[auto_1fr] gap-3">
-        <div className="flex w-32 flex-col items-center justify-center rounded-lg border border-line bg-panel2/40 p-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[auto_1fr]">
+        <div className="flex w-full flex-col items-center justify-center rounded-lg border border-line bg-panel2/40 p-3 sm:w-32">
           <svg viewBox="0 0 80 80" className="h-20 w-20 -rotate-90">
             <circle cx="40" cy="40" r="32" fill="none" stroke={LINE} strokeWidth="7" />
             <circle
@@ -190,7 +190,7 @@ function OribaMock() {
           <Kpi label="EMV" value="R$ 98k" />
         </div>
       </div>
-      <div className="mt-3 grid grid-cols-[1fr_1fr] gap-3">
+      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="rounded-lg border border-line bg-panel2/40 p-3">
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
             {L("Seguidores · histórico BQ", "Followers · BQ history")}
@@ -240,7 +240,7 @@ function VmMock() {
       tabs={[L("Mapa", "Map"), "KPIs", L("Ranking", "Ranking"), L("Categorias", "Categories"), L("Alertas", "Alerts")]}
       active={0}
     >
-      <div className="grid grid-cols-[1.5fr_1fr] gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1.5fr_1fr]">
         <div className="relative h-[148px] overflow-hidden rounded-lg border border-line bg-navy/60">
           <div className="absolute inset-3 rounded-md border border-dashed border-line" />
           <div className="absolute left-1/2 top-3 bottom-3 w-px bg-line" />
