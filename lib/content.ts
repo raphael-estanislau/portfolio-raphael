@@ -1,388 +1,484 @@
 export type Lang = "pt" | "en";
 
-type Bi = Record<Lang, string>;
-type BiList = Record<Lang, string[]>;
-
-export interface Project {
-  id: string;
-  index: string;
-  year: string;
-  name: string;
-  tagline: Bi;
-  summary: Bi;
-  role: Bi;
-  context: Bi;
-  highlights: BiList;
-  stack: string[];
-  metrics: { value: string; label: Bi }[];
-  mockupCaption: Bi;
-  links?: { demo?: string; repo?: string; note?: Bi };
-}
+export type Bi = Record<Lang, string>;
+export type BiList = Record<Lang, string[]>;
 
 export const PROFILE = {
   name: "Raphael Estanislau",
   email: "raphaelldinizz@icloud.com",
   github: "https://github.com/raphael-estanislau",
   location: { pt: "São Paulo, Brasil", en: "São Paulo, Brazil" } as Bi,
-  role: {
+  /** Cargo real. O posicionamento do site é a direção; isto aqui é o fato. */
+  jobTitle: {
     pt: "Data Science & I.A · Grupo Shoulder",
     en: "Data Science & AI · Grupo Shoulder",
   } as Bi,
 };
 
-export const PROJECTS: Project[] = [
-  {
-    id: "dashboard-crm",
-    index: "01",
-    year: "2026",
-    name: "Dashboard CRM",
-    tagline: {
-      pt: "Plataforma multi-marca de performance de CRM",
-      en: "Multi-brand CRM performance platform",
-    },
-    context: {
-      pt: "Em produção · Oriba, Haight e Shoulder",
-      en: "In production · Oriba, Haight and Shoulder",
-    },
-    summary: {
-      pt: "Aplicação interna que reúne num só lugar a performance das campanhas de CRM das três marcas do grupo em quatro canais: Email, SMS, Web Push e App Push. Os números vêm da Insider e ganham receita atribuída pelo Google Analytics 4. Tem ainda aba dedicada de receita, carrinho abandonado e comportamento de navegação. Os times abrem esse painel toda semana pra montar apresentação.",
-      en: "Internal app that brings the three brands' CRM performance into one place across four channels: Email, SMS, Web Push and App Push. The numbers come from Insider and gain revenue attributed through Google Analytics 4. It also has dedicated tabs for revenue, abandoned cart and browsing behavior. The teams open this panel every week to build their reports.",
-    },
-    role: {
-      pt: "Concepção, arquitetura e desenvolvimento. Sozinho, de ponta a ponta.",
-      en: "Concept, architecture and development. Solo, end to end.",
-    },
-    highlights: {
-      pt: [
-        "Quatro canais (Email, SMS, Web Push, App Push) mais carrinho abandonado, navegação e receita, tudo numa interface multi-marca onde cada marca só enxerga o que é dela",
-        "Receita atribuída pelo GA4 com match aproximado entre o nome da campanha e o utm_campaign, contada pelo mês da compra, então uma venda tardia ainda cai na campanha certa",
-        "Ingestão dispara e responde na hora: o cron diário roda em segundo plano por 5 a 15 minutos sem estourar o limite de 60s do Railway, com retry em falha de socket e TLS",
-        "Oito modelos no Postgres via Prisma, login com JWT por marca e área de admin para reconciliação e backfill histórico",
-      ],
-      en: [
-        "Four channels (Email, SMS, Web Push, App Push) plus abandoned cart, browsing and revenue, all in one multi-brand interface where each brand only sees its own data",
-        "Revenue attributed through GA4 with fuzzy matching between campaign name and utm_campaign, counted by purchase month, so a late sale still lands on the right campaign",
-        "Ingestion fires and returns instantly: the daily cron runs in the background for 5 to 15 minutes without hitting Railway's 60s limit, with retries on socket and TLS failures",
-        "Eight Postgres models through Prisma, per-brand JWT login and an admin area for reconciliation and historical backfill",
-      ],
-    },
-    stack: [
-      "Next.js 14",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Recharts",
-      "Node.js",
-      "Express",
-      "Prisma",
-      "PostgreSQL · Neon",
-      "GA4 Data API",
-      "Railway",
+/**
+ * A tese do portfólio.
+ *
+ * Não é slogan: é a regra que aparece implementada nos três sistemas, com
+ * arquivo e comportamento verificáveis em cada um. Está aqui porque é o que
+ * separa construir um painel de construir um painel em que dá para confiar.
+ */
+export const PRINCIPLE = {
+  kicker: { pt: "O fio que atravessa os três", en: "The thread across all three" } as Bi,
+  title: { pt: "Ausência não é zero", en: "Absence is not zero" } as Bi,
+  body: {
+    pt: [
+      "Zero é uma afirmação. Zero menção diz que ninguém falou da marca. Custo zero diz que a consulta saiu de graça. Quando a fonte não respondeu, as duas frases são falsas, e o painel as escreve com a mesma confiança que usa quando acerta.",
+      "Nos três sistemas eu resolvi isso no código. A fonte declara o próprio estado, a métrica sem base devolve nulo, e a tela mostra a lacuna. Quem faz isso no primeiro commit gasta um campo a mais por contrato. Quem tenta acrescentar depois reescreve todas as telas.",
     ],
-    metrics: [
-      { value: "4", label: { pt: "canais", en: "channels" } },
-      { value: "3", label: { pt: "marcas", en: "brands" } },
-      { value: "9", label: { pt: "abas analíticas", en: "analytical tabs" } },
+    en: [
+      "Zero is a claim. Zero mentions says nobody talked about the brand. Zero cost says the query was free. When the source did not answer, both sentences are false, and the panel writes them with the same confidence it uses when it is right.",
+      "Across the three systems I solved this in code. Each source reports its own state, a metric with no base returns null, and the screen shows the gap. Do it in the first commit and you spend one extra field per contract. Add it later and you rewrite every screen.",
     ],
-    mockupCaption: {
-      pt: "Mockup do dashboard CRM multi-marca com KPIs de campanha e receita GA4",
-      en: "Mockup of the multi-brand CRM dashboard with campaign KPIs and GA4 revenue",
+  } as BiList,
+  evidence: [
+    {
+      project: "Copiloto de CRM",
+      slug: "copiloto-crm",
+      text: {
+        pt: "Fonte indisponível ou pulada pela cota entra no contexto como lacuna declarada, e a instrução ao modelo diz, com essas palavras, que isso nunca significa zero.",
+        en: "An unavailable or budget-skipped source enters the context as a declared gap, and the model instruction says, in those words, that this never means zero.",
+      } as Bi,
+      code: "copilotContextHubService.ts",
     },
-    links: {
-      note: {
-        pt: "Sistema interno · solicitar demo por e-mail",
-        en: "Internal system · request a demo by email",
-      },
+    {
+      project: "Operação omnichannel",
+      slug: "operacao-omnichannel",
+      text: {
+        pt: "Estimativa de custo ausente é tratada como desconhecida, nunca como custo zero. E a resposta lista os indicadores que a fonte não sustenta, com motivo.",
+        en: "A missing cost estimate is treated as unknown, never as zero cost. And the response lists the indicators the source cannot support, with a reason.",
+      } as Bi,
+      code: "meta.consulta.estimativaIndisponivel",
     },
-  },
-  {
-    id: "oriba-intelligence",
-    index: "02",
-    year: "2026",
-    name: "Oriba Intelligence",
-    tagline: {
-      pt: "Inteligência competitiva de mercado, social e mídia",
-      en: "Competitive intelligence: market, social and media",
+    {
+      project: "Oriba Intelligence",
+      slug: "oriba-intelligence",
+      text: {
+        pt: "O Net Sentiment Score é nulo quando não há menção para calcular. O Buzz aparece como indisponível em Shoulder e Haight em vez de exibir zero menções.",
+        en: "Net Sentiment Score is null when there is no mention to compute from. Buzz shows as unavailable for Shoulder and Haight instead of displaying zero mentions.",
+      } as Bi,
+      code: "DataSourceStatus",
     },
-    context: {
-      pt: "Em produção · Oriba e Shoulder",
-      en: "In production · Oriba and Shoulder",
-    },
-    summary: {
-      pt: "Sistema de inteligência competitiva que reúne quatro frentes num painel só: pricing (catálogo Qlik de ~790 mil SKUs), redes sociais próprias (Meta Graph API, com seguidor real e insight de Reels), mídia paga e influenciadores (Meta Marketing API) e concorrência (Buzz Monitor). Um cron diário grava tudo num data warehouse no BigQuery, então o histórico fica confiável. Quando o BigQuery ainda não tem o dado do período, o app volta sozinho pra API ao vivo.",
-      en: "Competitive-intelligence system that pulls four fronts into a single panel: pricing (a ~790k-SKU Qlik catalog), owned social (Meta Graph API, with real followers and Reels insights), paid media and influencers (Meta Marketing API) and competitors (Buzz Monitor). A daily cron writes everything into a BigQuery warehouse, so the history stays reliable. When BigQuery doesn't have the period yet, the app falls back to the live API on its own.",
-    },
-    role: {
-      pt: "Concepção e desenvolvimento. Sozinho, de ponta a ponta.",
-      en: "Concept and development. Solo, end to end.",
-    },
-    highlights: {
-      pt: [
-        "Data warehouse no BigQuery (prt-dados-comercial.oriba_intelligence) populado por cron diário; a leitura histórica tem fallback transparente pras APIs quando falta dado no período",
-        "Integração direta com a Meta Graph e Marketing API: seguidor real, insight de Reels, demografia e performance de mídia, justamente os números que o social listening estimava errado",
-        "Catálogo Qlik de ~790 mil SKUs processado em streaming, virando métricas próprias: score de competitividade de 0 a 100, elasticidade promocional, índice de pressão competitiva e EMV (valor equivalente em mídia)",
-        "Dez abas analíticas, duas marcas, HTML montado em Jinja2 com cache-busting por hash do arquivo; deploy no Render no plano que não tem cold start",
-      ],
-      en: [
-        "BigQuery warehouse (prt-dados-comercial.oriba_intelligence) populated by a daily cron; historical reads fall back transparently to the APIs when a period is missing",
-        "Direct integration with the Meta Graph and Marketing API: real followers, Reels insights, demographics and media performance, exactly the numbers social listening was estimating wrong",
-        "A ~790k-SKU Qlik catalog processed in streaming, turned into custom metrics: a 0 to 100 competitiveness score, promotional elasticity, competitive-pressure index and EMV (earned media value)",
-        "Ten analytical tabs, two brands, HTML assembled with Jinja2 and file-hash cache-busting; deployed on Render's no-cold-start plan",
-      ],
-    },
-    stack: [
-      "Python",
-      "Flask",
-      "Jinja2",
-      "JavaScript",
-      "Chart.js",
-      "BigQuery",
-      "Google Cloud Storage",
-      "Meta Graph API",
-      "Meta Marketing API",
-      "Buzz Monitor API",
-      "Qlik",
-      "Playwright",
-      "Render",
-    ],
-    metrics: [
-      { value: "~790k", label: { pt: "SKUs processados", en: "SKUs processed" } },
-      { value: "10", label: { pt: "abas analíticas", en: "analytical tabs" } },
-      { value: "4", label: { pt: "fontes de dados", en: "data sources" } },
-    ],
-    mockupCaption: {
-      pt: "Mockup do painel Oriba Intelligence com score competitivo e métricas de social",
-      en: "Mockup of the Oriba Intelligence panel with competitiveness score and social metrics",
-    },
-    links: {
-      note: {
-        pt: "Sistema interno · solicitar demo por e-mail",
-        en: "Internal system · request a demo by email",
-      },
-    },
-  },
-  {
-    id: "vm-pinheiros",
-    index: "03",
-    year: "2026",
-    name: "VM Pinheiros",
-    tagline: {
-      pt: "Visual Merchandising orientado a dados",
-      en: "Data-driven Visual Merchandising",
-    },
-    context: {
-      pt: "Em uso · loja Oriba Pinheiros",
-      en: "In use · Oriba Pinheiros store",
-    },
-    summary: {
-      pt: "Painel de Visual Merchandising para a loja de Pinheiros. Pega a planilha mensal de bipagem e devolve um dashboard num único arquivo HTML, sem servidor nenhum, com mapa da loja, ranking de posições, análise por categoria e alerta automático do que precisa girar. A diretoria abre o arquivo e funciona, offline.",
-      en: "Visual Merchandising panel for the Pinheiros store. It takes the monthly scanning spreadsheet and returns a dashboard in a single HTML file, no server at all, with a store map, position ranking, category analysis and automatic alerts for what needs to move. Leadership opens the file and it just works, offline.",
-    },
-    role: {
-      pt: "Concepção e desenvolvimento",
-      en: "Concept and development",
-    },
-    highlights: {
-      pt: [
-        "Saída num único HTML que roda offline, então dá pra mandar pra diretoria sem pedir infra, login ou instalação de nada",
-        "Mapa da loja com pin colorido por participação de venda; clicar no pin abre os produtos que mais vendem e os que estão parados naquela posição",
-        "Pipeline em Python e Pandas que filtra a planilha, classifica cada móvel, calcula as métricas e injeta o JSON pronto no template",
-        "Seis abas com os tokens de design da Oriba aplicados do mesmo jeito em todas",
-      ],
-      en: [
-        "Output in a single HTML that runs offline, so you can send it to leadership without asking for infra, login or installing anything",
-        "Store map with pins colored by sales share; clicking a pin opens the best sellers and the stalled items in that spot",
-        "A Python and Pandas pipeline that filters the spreadsheet, classifies each fixture, computes the metrics and injects ready JSON into the template",
-        "Six tabs with Oriba's design tokens applied the same way across all of them",
-      ],
-    },
-    stack: ["Python", "Pandas", "openpyxl", "HTML", "CSS", "Chart.js"],
-    metrics: [
-      { value: "1", label: { pt: "arquivo, zero servidor", en: "file, zero server" } },
-      { value: "6", label: { pt: "abas analíticas", en: "analytical tabs" } },
-      { value: "150+", label: { pt: "SKUs analisados", en: "SKUs analyzed" } },
-    ],
-    mockupCaption: {
-      pt: "Mockup do painel VM Pinheiros com mapa da loja e alertas de giro",
-      en: "Mockup of the VM Pinheiros panel with store map and rotation alerts",
-    },
-    links: {
-      note: {
-        pt: "Arquivo offline · solicitar amostra por e-mail",
-        en: "Offline file · request a sample by email",
-      },
-    },
-  },
-];
-
-export const HIGHLIGHT_TERMS: Record<Lang, string[]> = {
-  pt: [
-    "Grupo Shoulder",
-    "Oriba",
-    "Haight",
-    "Shoulder",
-    "data warehouse",
-    "BigQuery",
-    "HTML único",
   ],
-  en: [
-    "Grupo Shoulder",
-    "Oriba",
-    "Haight",
-    "Shoulder",
-    "data warehouse",
-    "BigQuery",
-    "single HTML",
-    "multi-brand platform",
-  ],
+  closing: {
+    pt: "Um backend honesto resolve metade. A outra metade são componentes pequenos e repetitivos que deixam a ressalva barata de exibir. Quanto menos trabalho dá mostrar a lacuna, mais vezes ela aparece onde precisa.",
+    en: "An honest backend solves half of it. The other half is small, repetitive components that keep the caveat cheap to display. The less work it takes to show the gap, the more often it lands where it matters.",
+  } as Bi,
 };
 
-export const SKILLS: { group: Bi; items: string[] }[] = [
+export const SKILLS: { group: Bi; items: { label: string; wip?: boolean }[] }[] = [
   {
-    group: { pt: "Frontend", en: "Frontend" },
-    items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Recharts", "Chart.js"],
+    group: { pt: "IA aplicada", en: "Applied AI" },
+    items: [
+      { label: "Integração com modelos de linguagem" },
+      { label: "Preparação e roteamento de contexto" },
+      { label: "Saídas estruturadas e validação" },
+      { label: "Orçamento de custo e cache por chamada" },
+      { label: "Base de conhecimento versionada" },
+      { label: "Fallback determinístico e indisponibilidade" },
+      { label: "Avaliação de qualidade de resposta", wip: true },
+    ],
   },
   {
     group: { pt: "Backend & APIs", en: "Backend & APIs" },
-    items: ["Node.js", "Express", "Python", "Flask", "Jinja2", "REST APIs"],
-  },
-  {
-    group: { pt: "Dados & I.A", en: "Data & AI" },
     items: [
-      "PostgreSQL",
-      "Prisma",
-      "BigQuery",
-      "Pandas",
-      "Google Analytics 4",
-      "Meta Graph & Marketing API",
-      "Qlik",
-      "Social listening",
+      { label: "Node.js" },
+      { label: "TypeScript" },
+      { label: "Express" },
+      { label: "Prisma" },
+      { label: "Zod" },
+      { label: "Python" },
+      { label: "Flask" },
+      { label: "REST · OpenAPI" },
+      { label: "Vitest" },
     ],
   },
   {
-    group: { pt: "Infra & Cloud", en: "Infra & Cloud" },
-    items: ["Railway", "Render", "Google Cloud Storage", "Neon", "Playwright", "Cron jobs"],
+    group: { pt: "Engenharia de dados", en: "Data engineering" },
+    items: [
+      { label: "BigQuery" },
+      { label: "PostgreSQL" },
+      { label: "Pandas" },
+      { label: "Modelagem analítica" },
+      { label: "Controle de custo de consulta" },
+      { label: "GA4 Data API" },
+      { label: "Meta Graph & Marketing API" },
+      { label: "Qlik" },
+    ],
+  },
+  {
+    group: { pt: "Frontend", en: "Frontend" },
+    items: [
+      { label: "Next.js" },
+      { label: "React" },
+      { label: "Tailwind CSS" },
+      { label: "Recharts" },
+      { label: "Chart.js" },
+      { label: "Acessibilidade de leitura de dado" },
+    ],
+  },
+  {
+    group: { pt: "Infra & operação", en: "Infra & operations" },
+    items: [
+      { label: "Railway" },
+      { label: "Render" },
+      { label: "Vercel" },
+      { label: "Google Cloud" },
+      { label: "Neon" },
+      { label: "Redis · BullMQ" },
+      { label: "Cron jobs" },
+    ],
+  },
+];
+
+/**
+ * Números da abertura.
+ *
+ * Nenhum deles é de vaidade: os quatro são verificáveis no código dos sistemas
+ * e eu consigo sustentar cada um numa conversa. "Zero dado pessoal enviado ao
+ * modelo" é uma decisão de arquitetura, não uma contagem.
+ */
+export const STATS: { value: string; label: Bi; note: Bi }[] = [
+  {
+    value: "3",
+    label: { pt: "sistemas em produção", en: "systems in production" },
+    note: {
+      pt: "Três marcas do Grupo Shoulder.",
+      en: "Three Grupo Shoulder brands.",
+    },
+  },
+  {
+    value: "6",
+    label: { pt: "fontes roteadas pelo copiloto", en: "sources routed by the copilot" },
+    note: {
+      pt: "Selecionadas pela aplicação, nunca pelo modelo.",
+      en: "Selected by the application, never by the model.",
+    },
+  },
+  {
+    value: "197",
+    label: { pt: "testes que não tocam a nuvem", en: "tests that never touch the cloud" },
+    note: {
+      pt: "Os de integração ficam fora da suíte padrão.",
+      en: "Integration tests stay out of the default suite.",
+    },
+  },
+  {
+    value: "0",
+    label: { pt: "dados pessoais enviados ao modelo", en: "personal records sent to the model" },
+    note: {
+      pt: "O modelo devolve filtros; a aplicação executa.",
+      en: "The model returns filters; the application executes.",
+    },
   },
 ];
 
 export const UI: Record<
   Lang,
   {
-    sidebar: {
-      tagline: string;
-      intro: string;
-      available: string;
-      nav: { about: string; work: string; contact: string };
+    nav: {
+      work: string;
+      principle: string;
+      about: string;
+      contact: string;
+      home: string;
+      sayHi: string;
     };
+    hero: {
+      kicker: string;
+      roleLead: string;
+      roleEm: string;
+      headline: string;
+      lede: string;
+      ctaPrimary: string;
+      ctaSecondary: string;
+      scroll: string;
+    };
+    marquee: string;
+    statsLabel: string;
     sections: {
-      about: { num: string; title: string };
-      work: { num: string; title: string };
-      contact: { num: string; title: string };
+      work: {
+        num: string;
+        label: string;
+        titleLead: string;
+        titleEm: string;
+        subtitle: string;
+      };
+      principle: { num: string; label: string };
+      about: { num: string; label: string; titleLead: string; titleEm: string };
+      skills: { label: string; note: string };
+      contact: {
+        num: string;
+        label: string;
+        kicker: string;
+        titleLead: string;
+        titleEm: string;
+        body: string;
+        cta: string;
+      };
     };
-    about: { body: string[]; skillsIntro: string };
+    about: { body: string[] };
     work: {
-      subtitle: string;
-      roleLabel: string;
-      highlightsLabel: string;
-      stackLabel: string;
-      showMore: string;
-      showLess: string;
-      requestDemo: string;
+      readCase: string;
+      alsoTitle: string;
+      alsoSubtitle: string;
+      indexTitleLead: string;
+      indexTitleEm: string;
+      indexLede: string;
     };
-    contact: { overline: string; title: string; body: string; cta: string };
-    footer: string;
+    caseUi: {
+      backToIndex: string;
+      onThisPage: string;
+      problem: string;
+      role: string;
+      roleDependencies: string;
+      architecture: string;
+      architectureNote: string;
+      decisions: string;
+      decisionsNote: string;
+      decisionProblem: string;
+      decisionChoice: string;
+      decisionAlternative: string;
+      decisionLimit: string;
+      evidence: string;
+      evidenceCaveat: string;
+      evalPlan: string;
+      result: string;
+      resultDone: string;
+      resultOpen: string;
+      resultNext: string;
+      stack: string;
+      access: string;
+      nextCase: string;
+      prevCase: string;
+      legend: string;
+      legendApp: string;
+      legendModel: string;
+      legendGuard: string;
+    };
+    footer: { built: string; source: string; rights: string };
     a11y: {
       skipToContent: string;
-      mobileNav: string;
-      pageNav: string;
-      loadingPreview: string;
+      langToggle: string;
+      mainNav: string;
+      diagramFlow: string;
     };
   }
 > = {
   pt: {
-    sidebar: {
-      tagline: "Transformo dados em decisão.",
-      intro:
-        "Data Science e IA no Grupo Shoulder. Construo do pipeline de ingestão até o painel que a operação usa, para Oriba, Haight e Shoulder.",
-      available: "Três sistemas em produção",
-      nav: { about: "Sobre", work: "Projetos", contact: "Contato" },
+    nav: {
+      work: "Projetos",
+      principle: "Princípio",
+      about: "Sobre",
+      contact: "Contato",
+      home: "Início",
+      sayHi: "Falar comigo",
     },
+    hero: {
+      kicker: "Portfólio '26",
+      roleLead: "Software, dados e",
+      roleEm: "IA aplicada",
+      headline:
+        "Construo aplicações que conectam dados, APIs e modelos de linguagem a problemas reais de negócio.",
+      lede: "Três sistemas em produção no Grupo Shoulder: um copiloto de IA sobre dados de CRM, uma plataforma de análise operacional omnichannel e uma plataforma de inteligência de mercado. Eu defino o problema, construo e mantenho.",
+      ctaPrimary: "Ver projetos",
+      ctaSecondary: "Conhecer o copiloto de CRM",
+      scroll: "Role",
+    },
+    marquee: "Ausência não é zero",
+    statsLabel: "Em números",
     sections: {
-      about: { num: "01", title: "Sobre mim" },
-      work: { num: "02", title: "Projetos" },
-      contact: { num: "03", title: "Contato" },
+      work: {
+        num: "01",
+        label: "Projetos",
+        titleLead: "Três sistemas, três tipos de",
+        titleEm: "evidência",
+        subtitle:
+          "Cada um está aqui por um motivo diferente: IA aplicada dentro de um produto, engenharia de produto e dados, e integração com evolução de arquitetura.",
+      },
+      principle: { num: "02", label: "Princípio" },
+      about: { num: "03", label: "Sobre", titleLead: "Como eu", titleEm: "trabalho" },
+      skills: {
+        label: "Competências",
+        note: "Marquei como em construção o que ainda não tem rotina executada nem resultado documentado.",
+      },
+      contact: {
+        num: "04",
+        label: "Contato",
+        kicker: "Tem um projeto em mente?",
+        titleLead: "Vamos",
+        titleEm: "conversar",
+        body: "Construo aplicações que usam modelos de linguagem com contexto controlado, saída validada e custo previsível. Se você quer discutir alguma dessas partes, ou apontar onde eu errei, me escreve.",
+        cta: "Falar comigo",
+      },
     },
     about: {
       body: [
-        "Cuido de Data Science e IA no Grupo Shoulder, para as três marcas: Oriba, Haight e Shoulder. Na prática, eu pego dado de plataforma de campanha, analytics, redes sociais e planilha de loja, que vivem espalhados e em formatos diferentes, e junto num painel que a operação e a diretoria abrem pra decidir.",
-        "Gosto de solução que entrega valor sem peso desnecessário. Tanto faz se é um HTML único que roda offline ou uma plataforma multi-marca com data warehouse e ingestão automatizada. O que importa é estar em produção, resolvendo um problema real.",
+        "Cuido de Data Science e IA no Grupo Shoulder, para Oriba, Haight e Shoulder. O dado que eu uso vive espalhado em plataforma de campanha, analytics, ERP, redes sociais, catálogo de mercado e planilha de loja. Eu junto isso numa aplicação que a operação e a diretoria abrem para decidir.",
+        "Nos últimos meses parei de tratar o modelo de linguagem como ferramenta de escrever código e passei a tratar como componente de produto. Isso muda o que você precisa construir em volta dele: seleção de contexto, contrato de resposta, validação, orçamento de custo, procedência visível e um caminho de degradação para quando a chamada falha.",
+        "Uso Claude, Codex e Kiro no desenvolvimento e não escondo isso. Eu respondo pela arquitetura, pela revisão e pelo que entra em produção. Numa conversa técnica eu explico por que o sistema ficou desse jeito e que riscos ele ainda carrega.",
       ],
-      skillsIntro: "Ferramentas que uso no dia a dia:",
     },
     work: {
-      subtitle: "Sistemas em produção no Grupo Shoulder. Cada um nasceu de um problema concreto do negócio.",
-      roleLabel: "Atuação",
-      highlightsLabel: "Por dentro",
-      stackLabel: "Stack",
-      showMore: "Ver mais detalhes",
-      showLess: "Ver menos",
-      requestDemo: "Solicitar demo",
+      readCase: "Ler o estudo de caso",
+      alsoTitle: "Projeto complementar",
+      alsoSubtitle: "Menor em escopo, mas continua em uso.",
+      indexTitleLead: "Três sistemas em",
+      indexTitleEm: "produção",
+      indexLede:
+        "Sistemas em produção no Grupo Shoulder. Cada estudo de caso traz o problema, as decisões que não aparecem na tela, a evidência que dá para reproduzir e o que ainda está em aberto.",
     },
-    contact: {
-      overline: "03 · E agora?",
-      title: "Vamos conversar.",
-      body: "Estou aberto a falar sobre dados, IA e produtos internos. Se você quer trocar uma ideia ou tem uma oportunidade, minha caixa de entrada está sempre aberta. Respondo o que chegar.",
-      cta: "Falar comigo",
+    caseUi: {
+      backToIndex: "Todos os projetos",
+      onThisPage: "Nesta página",
+      problem: "Problema e contexto",
+      role: "Minha atuação",
+      roleDependencies: "O que dependia de outras pessoas ou sistemas",
+      architecture: "Arquitetura",
+      architectureNote: "O caminho de uma requisição, do pedido à tela.",
+      decisions: "Decisões",
+      decisionsNote:
+        "Cada decisão traz a alternativa que descartei e o que ela custa. Decisão sem custo declarado costuma ser decisão que ninguém tomou.",
+      decisionProblem: "A pressão",
+      decisionChoice: "O que fiz",
+      decisionAlternative: "O que descartei",
+      decisionLimit: "O que isso custa",
+      evidence: "Evidência",
+      evidenceCaveat: "Ressalva",
+      evalPlan: "Em construção: como vou avaliar",
+      result: "Resultado e evolução",
+      resultDone: "Em produção",
+      resultOpen: "Em aberto",
+      resultNext: "Próximo problema",
+      stack: "Stack",
+      access: "Acesso",
+      nextCase: "Próximo caso",
+      prevCase: "Caso anterior",
+      legend: "Legenda",
+      legendApp: "código da aplicação",
+      legendModel: "modelo de linguagem",
+      legendGuard: "validação e controle",
     },
-    footer: "Projetado e construído por Raphael Estanislau · Next.js e Tailwind.",
+    footer: {
+      built: "Projetado e construído por Raphael Estanislau · Next.js e Tailwind",
+      source: "Código no GitHub",
+      rights: "São Paulo, Brasil",
+    },
     a11y: {
       skipToContent: "Pular para o conteúdo",
-      mobileNav: "Navegação das seções",
-      pageNav: "Seções da página",
-      loadingPreview: "Carregando preview…",
+      langToggle: "Alternar idioma",
+      mainNav: "Navegação principal",
+      diagramFlow: "Diagrama de fluxo da arquitetura",
     },
   },
   en: {
-    sidebar: {
-      tagline: "I turn data into decisions.",
-      intro:
-        "Data Science and AI at Grupo Shoulder. I build from the ingestion pipeline to the panel operations uses, for Oriba, Haight and Shoulder.",
-      available: "Three systems in production",
-      nav: { about: "About", work: "Work", contact: "Contact" },
+    nav: {
+      work: "Work",
+      principle: "Principle",
+      about: "About",
+      contact: "Contact",
+      home: "Home",
+      sayHi: "Say hi",
     },
+    hero: {
+      kicker: "Portfolio '26",
+      roleLead: "Software, data and",
+      roleEm: "applied AI",
+      headline:
+        "I build applications that connect data, APIs and language models to real business problems.",
+      lede: "Three systems in production at Grupo Shoulder: an AI copilot over CRM data, an omnichannel operations analytics platform, and a market intelligence platform. I frame the problem, build it and keep it running.",
+      ctaPrimary: "See the work",
+      ctaSecondary: "Read the CRM copilot case",
+      scroll: "Scroll",
+    },
+    marquee: "Absence is not zero",
+    statsLabel: "In numbers",
     sections: {
-      about: { num: "01", title: "About me" },
-      work: { num: "02", title: "Work" },
-      contact: { num: "03", title: "Contact" },
+      work: {
+        num: "01",
+        label: "Work",
+        titleLead: "Three systems, three kinds of",
+        titleEm: "evidence",
+        subtitle:
+          "Each one is here for a different reason: AI applied inside a product, product and data engineering, and integration with architectural evolution.",
+      },
+      principle: { num: "02", label: "Principle" },
+      about: { num: "03", label: "About", titleLead: "How I", titleEm: "work" },
+      skills: {
+        label: "Skills",
+        note: "I marked as in progress whatever has no executed routine and no documented results yet.",
+      },
+      contact: {
+        num: "04",
+        label: "Contact",
+        kicker: "Have a project in mind?",
+        titleLead: "Let's",
+        titleEm: "talk",
+        body: "I build applications that use language models with controlled context, validated output and predictable cost. If you want to dig into any of those parts, or point out where I got something wrong, write to me.",
+        cta: "Get in touch",
+      },
     },
     about: {
       body: [
-        "I handle Data Science and AI at Grupo Shoulder, across the three brands: Oriba, Haight and Shoulder. In practice, I take data from campaign platforms, analytics, social media and store spreadsheets, which live scattered and in different shapes, and pull it into a panel operations and leadership open to decide.",
-        "I like solutions that deliver value without unnecessary weight. A single HTML file that runs offline or a multi-brand platform with a data warehouse and automated ingestion, it makes no difference. What matters is that it's in production, solving a real problem.",
+        "I handle Data Science and AI at Grupo Shoulder, across Oriba, Haight and Shoulder. The data I work with lives scattered across campaign platforms, analytics, the ERP, social media, market catalogs and store spreadsheets. I pull it into an application operations and leadership open to decide.",
+        "Over the last months I stopped treating the language model as a tool for writing code and started treating it as a product component. That changes what you have to build around it: context selection, a response contract, validation, a cost budget, visible provenance and a degradation path for when the call fails.",
+        "I use Claude, Codex and Kiro while developing and I do not hide it. I answer for the architecture, the review and what ships. In a technical conversation I explain why the system came out this way and which risks it still carries.",
       ],
-      skillsIntro: "Tools I use day to day:",
     },
     work: {
-      subtitle: "Production systems at Grupo Shoulder. Each one grew out of a concrete business problem.",
-      roleLabel: "Role",
-      highlightsLabel: "Under the hood",
-      stackLabel: "Stack",
-      showMore: "Show more details",
-      showLess: "Show less",
-      requestDemo: "Request demo",
+      readCase: "Read the case study",
+      alsoTitle: "Supporting project",
+      alsoSubtitle: "Smaller in scope, still in use.",
+      indexTitleLead: "Three systems in",
+      indexTitleEm: "production",
+      indexLede:
+        "Systems in production at Grupo Shoulder. Each case study covers the problem, the decisions that never show up on screen, evidence you can reproduce, and what is still open.",
     },
-    contact: {
-      overline: "03 · What's next?",
-      title: "Let's talk.",
-      body: "I'm open to talking about data, AI and internal products. If you want to swap ideas or have an opportunity, my inbox is always open. I'll get back to whatever lands there.",
-      cta: "Get in touch",
+    caseUi: {
+      backToIndex: "All projects",
+      onThisPage: "On this page",
+      problem: "Problem and context",
+      role: "My role",
+      roleDependencies: "What depended on other people or systems",
+      architecture: "Architecture",
+      architectureNote: "The path of one request, from the ask to the screen.",
+      decisions: "Decisions",
+      decisionsNote:
+        "Each decision carries the alternative I rejected and what it costs. A decision with no stated cost is usually one nobody took.",
+      decisionProblem: "The pressure",
+      decisionChoice: "What I did",
+      decisionAlternative: "What I rejected",
+      decisionLimit: "What it costs",
+      evidence: "Evidence",
+      evidenceCaveat: "Caveat",
+      evalPlan: "In progress: how I will evaluate it",
+      result: "Result and evolution",
+      resultDone: "In production",
+      resultOpen: "Open",
+      resultNext: "Next problem",
+      stack: "Stack",
+      access: "Access",
+      nextCase: "Next case",
+      prevCase: "Previous case",
+      legend: "Legend",
+      legendApp: "application code",
+      legendModel: "language model",
+      legendGuard: "validation and control",
     },
-    footer: "Designed and built by Raphael Estanislau · Next.js and Tailwind.",
+    footer: {
+      built: "Designed and built by Raphael Estanislau · Next.js and Tailwind",
+      source: "Source on GitHub",
+      rights: "São Paulo, Brazil",
+    },
     a11y: {
       skipToContent: "Skip to content",
-      mobileNav: "Section navigation",
-      pageNav: "Page sections",
-      loadingPreview: "Loading preview…",
+      langToggle: "Toggle language",
+      mainNav: "Main navigation",
+      diagramFlow: "Architecture flow diagram",
     },
   },
 };
